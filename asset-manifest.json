@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/onmoji-checklist/static/css/main.073c9b0a.css",
-    "main.js": "/onmoji-checklist/static/js/main.af7a8e30.js",
+    "main.js": "/onmoji-checklist/static/js/main.eac5de2f.js",
     "static/js/787.6080825e.chunk.js": "/onmoji-checklist/static/js/787.6080825e.chunk.js",
     "index.html": "/onmoji-checklist/index.html",
     "main.073c9b0a.css.map": "/onmoji-checklist/static/css/main.073c9b0a.css.map",
-    "main.af7a8e30.js.map": "/onmoji-checklist/static/js/main.af7a8e30.js.map",
+    "main.eac5de2f.js.map": "/onmoji-checklist/static/js/main.eac5de2f.js.map",
     "787.6080825e.chunk.js.map": "/onmoji-checklist/static/js/787.6080825e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.af7a8e30.js"
+    "static/js/main.eac5de2f.js"
   ]
 }

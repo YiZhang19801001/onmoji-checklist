@@ -52,18 +52,15 @@ function TaskCard({ task, toggleTask, type }: Props) {
   }, []);
 
   return (
-    <li key={task.name} className="py-4 flex">
-      <div className="ml-3">
+    <li key={task.name}>
+      <div>
         <input
           id={task.name}
           type="checkbox"
           onChange={toggleTask}
           checked={task.isCompleted || false}
         />
-        <label
-          htmlFor={task.name}
-          className="text-sm font-medium text-gray-900"
-        >
+        <label htmlFor={task.name}>
           {task.name} {timeTo}
         </label>
       </div>

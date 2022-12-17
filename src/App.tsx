@@ -46,13 +46,13 @@ function App() {
 
   return (
     <>
-      <button onClick={toggleCompletedTasks} className="mx-2">
+      <button onClick={toggleCompletedTasks}>
         {isCompletedTasksVisible
           ? 'Hide Completed Tasks'
           : 'Show Completed Tasks'}
       </button>
 
-      <button onClick={toggleUpcomingTasks} className="mx-2">
+      <button onClick={toggleUpcomingTasks}>
         {isUpcomingTasksVisible ? 'Hide Upcoming Tasks' : 'Show Upcoming Tasks'}
       </button>
 
@@ -70,7 +70,7 @@ function App() {
       </select>
       {/* Tasks can start now */}
       {uncompletedTasksCanStart.length > 0 ? (
-        <ul className="divide-y divide-gray-200">
+        <ul>
           {uncompletedTasksCanStart.map((task: Task) => (
             <TaskCard
               key={task.name}
@@ -85,7 +85,7 @@ function App() {
       )}
       {/* Tasks need start later */}
       {isUpcomingTasksVisible && (
-        <ul className="divide-y divide-gray-200">
+        <ul>
           {uncompletedTasksCannotStart.map((task: Task) => (
             <TaskCard
               key={task.name}
@@ -98,7 +98,7 @@ function App() {
       )}
       {/* Tasks which are completed */}
       {isCompletedTasksVisible && (
-        <ul className="divide-y divide-gray-200">
+        <ul>
           {completedTasks.map((task) => (
             <TaskCard
               key={task.name}

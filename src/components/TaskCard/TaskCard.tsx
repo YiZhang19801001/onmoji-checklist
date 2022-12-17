@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Task } from '../../Model/Task';
 
+import './TaskCard.css';
+
 enum TaskType {
   action = 1,
   await = 2,
@@ -53,15 +55,16 @@ function TaskCard({ task, toggleTask, type }: Props) {
 
   return (
     <li key={task.name}>
-      <div>
+      <div className="task-card">
         <input
           id={task.name}
           type="checkbox"
           onChange={toggleTask}
           checked={task.isCompleted || false}
         />
-        <label htmlFor={task.name}>
-          {task.name} {timeTo}
+        {timeTo && <span className="time-to">{timeTo}</span>}
+        <label className="task-name" htmlFor={task.name}>
+          {task.name}
         </label>
       </div>
     </li>

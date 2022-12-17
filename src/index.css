@@ -2,4 +2,26 @@
 
 * {
   font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+ul li:last-child {
+  border-bottom: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
 }

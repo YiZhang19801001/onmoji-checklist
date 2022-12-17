@@ -4,6 +4,8 @@ import { Task } from './Model/Task';
 import useTasks from './hooks/useTasks';
 import useUser from './hooks/useUser';
 
+import './App.css';
+
 function App() {
   const [isCompletedTasksVisible, setIsCompletedTasksVisible] = useState(false);
   const [isUpcomingTasksVisible, setIsUpcomingTasksVisible] = useState(false);
@@ -45,31 +47,35 @@ function App() {
     .sort((a, b) => a.startTime - b.startTime);
 
   return (
-    <>
-      <button onClick={toggleCompletedTasks}>
-        {isCompletedTasksVisible
-          ? 'Hide Completed Tasks'
-          : 'Show Completed Tasks'}
-      </button>
+    <div className="root">
+      <header>
+        <button onClick={toggleCompletedTasks}>
+          {isCompletedTasksVisible
+            ? 'Hide Completed Tasks'
+            : 'Show Completed Tasks'}
+        </button>
 
-      <button onClick={toggleUpcomingTasks}>
-        {isUpcomingTasksVisible ? 'Hide Upcoming Tasks' : 'Show Upcoming Tasks'}
-      </button>
+        <button onClick={toggleUpcomingTasks}>
+          {isUpcomingTasksVisible
+            ? 'Hide Upcoming Tasks'
+            : 'Show Upcoming Tasks'}
+        </button>
 
-      <select
-        title="user-select"
-        name="user-select"
-        value={selectedUser.id}
-        onChange={handleUserSelectOnChange}
-      >
-        {users.map((user) => (
-          <option value={user.id} key={user.id}>
-            {user.name}
-          </option>
-        ))}
-      </select>
+        <select
+          title="user-select"
+          name="user-select"
+          value={selectedUser.id}
+          onChange={handleUserSelectOnChange}
+        >
+          {users.map((user) => (
+            <option value={user.id} key={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+      </header>
       {/* Tasks can start now */}
-      {uncompletedTasksCanStart.length > 0 ? (
+      {uncompletedTasksCanStart.length > 0 && (
         <ul>
           {uncompletedTasksCanStart.map((task: Task) => (
             <TaskCard
@@ -80,9 +86,15 @@ function App() {
             />
           ))}
         </ul>
-      ) : (
-        'No more tasks'
       )}
+      {uncompletedTasksCanStart.length <= 0 &&
+        !isUpcomingTasksVisible &&
+        !isCompletedTasksVisible && (
+          <div className="completed-message">
+            任务已经完成，可以开始刷副本了。 今天还有
+            {uncompletedTasksCannotStart.length}个任务待完成。
+          </div>
+        )}
       {/* Tasks need start later */}
       {isUpcomingTasksVisible && (
         <ul>
@@ -109,7 +121,7 @@ function App() {
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 

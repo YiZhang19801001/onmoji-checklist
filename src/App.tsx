@@ -1,46 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TaskCard from './components/TaskCard/TaskCard';
-import { dailyTasks, weeklyTasks, otherTasks } from './data/tasks';
-import mapTasks from './helpers/mapTasks';
 import { Task } from './Model/Task';
-
-const localStorageKey = 'onmyoji-checklist';
+import useTasks from './hooks/useTasks';
+import useUser from './hooks/useUser';
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [isCompletedTasksVisible, setIsCompletedTasksVisible] = useState(false);
   const [isUpcomingTasksVisible, setIsUpcomingTasksVisible] = useState(false);
-
-  useEffect(() => {
-    const data = localStorage.getItem(localStorageKey);
-    if (!data) {
-      localStorage.setItem(
-        localStorageKey,
-        JSON.stringify([...dailyTasks, ...weeklyTasks, ...otherTasks])
-      );
-    } else {
-      setTasks(mapTasks(data));
-    }
-  }, []);
-
-  const toggleTask = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const now = new Date();
-    const updatedTasks = tasks.map((task) => {
-      if (task.name !== event.target.id) return task;
-      return { ...task, isCompleted: event.target.checked };
-    });
-    setTasks(updatedTasks);
-
-    localStorage.setItem(
-      localStorageKey,
-      JSON.stringify(
-        updatedTasks.map((task) => ({
-          ...task,
-          lastUpdatedTime: now.getTime(),
-        }))
-      )
-    );
-  };
+  const { selectedUser, users, selectUserById } = useUser();
+  const { tasks, toggleTask } = useTasks(selectedUser.id);
 
   // todo:: hide some unnecessary tasks from the list.
   const hideTheTask = () => {};
@@ -57,6 +25,12 @@ function App() {
   ) => {
     event.preventDefault();
     setIsUpcomingTasksVisible(!isUpcomingTasksVisible);
+  };
+
+  const handleUserSelectOnChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    selectUserById(event.target.value);
   };
 
   const d = new Date();
@@ -81,17 +55,34 @@ function App() {
       <button onClick={toggleUpcomingTasks} className="mx-2">
         {isUpcomingTasksVisible ? 'Hide Upcoming Tasks' : 'Show Upcoming Tasks'}
       </button>
-      {/* Tasks can start now */}
-      <ul className="divide-y divide-gray-200">
-        {uncompletedTasksCanStart.map((task: Task) => (
-          <TaskCard
-            key={task.name}
-            task={task}
-            toggleTask={toggleTask}
-            type={1}
-          />
+
+      <select
+        title="user-select"
+        name="user-select"
+        value={selectedUser.id}
+        onChange={handleUserSelectOnChange}
+      >
+        {users.map((user) => (
+          <option value={user.id} key={user.id}>
+            {user.name}
+          </option>
         ))}
-      </ul>
+      </select>
+      {/* Tasks can start now */}
+      {uncompletedTasksCanStart.length > 0 ? (
+        <ul className="divide-y divide-gray-200">
+          {uncompletedTasksCanStart.map((task: Task) => (
+            <TaskCard
+              key={task.name}
+              task={task}
+              toggleTask={toggleTask}
+              type={1}
+            />
+          ))}
+        </ul>
+      ) : (
+        'No more tasks'
+      )}
       {/* Tasks need start later */}
       {isUpcomingTasksVisible && (
         <ul className="divide-y divide-gray-200">

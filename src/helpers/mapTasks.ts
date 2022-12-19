@@ -1,4 +1,4 @@
-import { dailyTasks, weeklyTasks, otherTasks } from '../data/tasks';
+import { dailyTasks, weeklyTasks, otherTasks } from '../data/tasks-seed';
 import { Task } from '../Model/Task';
 
 function mapTasks(jsonString: string): Task[] {

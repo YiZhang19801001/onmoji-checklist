@@ -10,10 +10,14 @@ function App() {
   const [isCompletedTasksVisible, setIsCompletedTasksVisible] = useState(false);
   const [isUpcomingTasksVisible, setIsUpcomingTasksVisible] = useState(false);
   const { selectedUser, users, selectUserById } = useUser();
-  const { tasks, toggleTask } = useTasks(selectedUser.id);
+  const { tasks, toggleTask, flushTasks } = useTasks(selectedUser.id);
 
   // todo:: hide some unnecessary tasks from the list.
   const hideTheTask = () => {};
+  const flushAllTasks = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    users.forEach((user) => flushTasks(user.id));
+  };
 
   const toggleCompletedTasks = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -49,6 +53,10 @@ function App() {
   return (
     <div className="root">
       <header>
+        <button onClick={flushAllTasks}>
+          Updated DB structure
+        </button>
+
         <button onClick={toggleCompletedTasks}>
           {isCompletedTasksVisible
             ? 'Hide Completed Tasks'

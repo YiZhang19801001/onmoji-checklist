@@ -6,4 +6,6 @@ export type Task = {
   startTime: number;
   resetTime?: number;
   duration?: number;
+  postpone?: boolean;
+  showPostpone?: boolean;
 };

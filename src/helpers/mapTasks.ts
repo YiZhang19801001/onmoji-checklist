@@ -40,14 +40,27 @@ function mapTasks(jsonString: string): Task[] {
       // Only manipulate the date if it isn't Mon.
       const monday =
         day !== 1 ? now.setHours(-24 * (day - 1)) : now.setHours(3, 0, 0); // Set the hours to day number minus 1
+      const lastUpdateDate = new Date(task.lastUpdatedTime || 0);
+      const lastUpdateDay = lastUpdateDate.getDay() || 7;
 
-      if (monday < (task.lastUpdatedTime || 0)) return task;
+      // don't do anything
+      if (
+        monday < (task.lastUpdatedTime || 0) &&
+        (task.isCompleted ||
+          (day === lastUpdateDay && task.postpone && !task.isCompleted))
+      )
+        return { ...task, showPostpone: day !== 7 };
+      // make postpone tasks visible
+      if (monday < (task.lastUpdatedTime || 0) && !task.isCompleted)
+        return { ...task, postpone: false, showPostpone: day !== 7 };
       // reset the task;
       return {
         ...task,
+        postpone: false,
         isCompleted: false,
         lastUpdatedTime: now.getTime(),
         startTime: monday,
+        showPostpone: day !== 7,
       };
     }
 

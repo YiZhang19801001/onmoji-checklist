@@ -10,3 +10,11 @@
 .task-card .time-to {
   font-size: 0.75rem;
 }
+
+button.postpone-button {
+  padding: 5px 10px;
+  background-color: rgb(129, 93, 93);
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+}

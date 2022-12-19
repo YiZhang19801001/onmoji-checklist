@@ -60,16 +60,11 @@ const useTasks = (id: string) => {
     }
   };
 
-  const toggleTask = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateTasks = (updatedTasks: Task[]) => {
     const now = new Date();
-    const updatedTasks = tasks.map((task) => {
-      if (task.name !== event.target.id) return task;
-      return { ...task, isCompleted: event.target.checked };
-    });
-    setTasks(updatedTasks);
-
+    const key = id === '' ? localStorageKey : `${localStorageKey}-${id}`;
     localStorage.setItem(
-      localStorageKey,
+      key,
       JSON.stringify(
         updatedTasks.map((task) => ({
           ...task,
@@ -77,13 +72,28 @@ const useTasks = (id: string) => {
         }))
       )
     );
+  }
+
+  const toggleTask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.name !== event.target.id) return task;
+      return { ...task, isCompleted: event.target.checked };
+    });
+    setTasks(updatedTasks);
+
+    updateTasks(updatedTasks);
   };
 
-  const postponeTask = (...args:any) => {
-    console.log(args);
+  const postponeTask = (taskId: number) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      return { ...task, postpone: true };
+    });
+    setTasks(updatedTasks);
+    updateTasks(updatedTasks);
   } 
 
-  return { tasks, toggleTask, flushTasks };
+  return { tasks, toggleTask, flushTasks, postponeTask };
 };
 
 export default useTasks;

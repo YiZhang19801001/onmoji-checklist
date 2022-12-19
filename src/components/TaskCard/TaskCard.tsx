@@ -12,10 +12,11 @@ enum TaskType {
 type Props = {
   task: Task;
   toggleTask: React.ChangeEventHandler<HTMLInputElement>;
+  postponeTask: Function;
   type: TaskType;
 };
 
-function TaskCard({ task, toggleTask, type }: Props) {
+function TaskCard({ task, toggleTask, type, postponeTask }: Props) {
   const [timeTo, setTimeTo] = useState('');
   const intervalRef = useRef<NodeJS.Timer>();
 
@@ -53,6 +54,13 @@ function TaskCard({ task, toggleTask, type }: Props) {
     };
   }, []);
 
+  const handlePostponeTask = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    if (typeof postponeTask === 'function') postponeTask(task.id);
+  };
+
   return (
     <li key={task.name}>
       <div className="task-card">
@@ -66,6 +74,11 @@ function TaskCard({ task, toggleTask, type }: Props) {
         <label className="task-name" htmlFor={task.name}>
           {task.name}
         </label>
+        {task.showPostpone && (
+          <button onClick={handlePostponeTask} className="postpone-button">
+            Move to tomorrow
+          </button>
+        )}
       </div>
     </li>
   );

@@ -10,7 +10,7 @@ function App() {
   const [isCompletedTasksVisible, setIsCompletedTasksVisible] = useState(false);
   const [isUpcomingTasksVisible, setIsUpcomingTasksVisible] = useState(false);
   const { selectedUser, users, selectUserById } = useUser();
-  const { tasks, toggleTask, flushTasks } = useTasks(selectedUser.id);
+  const { tasks, toggleTask, flushTasks, postponeTask } = useTasks(selectedUser.id);
 
   // todo:: hide some unnecessary tasks from the list.
   const hideTheTask = () => {};
@@ -44,10 +44,10 @@ function App() {
 
   const completedTasks = tasks.filter((task) => task.isCompleted);
   const uncompletedTasksCanStart = tasks.filter(
-    (task) => !task.isCompleted && task.startTime < now
+    (task) => !task.isCompleted && task.startTime < now && !task.postpone
   );
   const uncompletedTasksCannotStart = tasks
-    .filter((task) => !task.isCompleted && task.startTime > now)
+    .filter((task) => !task.isCompleted && task.startTime > now && !task.postpone)
     .sort((a, b) => a.startTime - b.startTime);
 
   return (
@@ -90,6 +90,7 @@ function App() {
               key={task.name}
               task={task}
               toggleTask={toggleTask}
+              postponeTask={postponeTask}
               type={1}
             />
           ))}
@@ -111,6 +112,7 @@ function App() {
               key={task.name}
               task={task}
               toggleTask={toggleTask}
+              postponeTask={postponeTask}
               type={2}
             />
           ))}
@@ -124,6 +126,7 @@ function App() {
               key={task.name}
               task={task}
               toggleTask={toggleTask}
+              postponeTask={postponeTask}
               type={3}
             />
           ))}
